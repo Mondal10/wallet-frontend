@@ -1,3 +1,5 @@
 <script setup></script>
 
-<template>Hello</template>
+<template>
+  <div class="bg-red-300 text-white">Hello</div>
+</template>
