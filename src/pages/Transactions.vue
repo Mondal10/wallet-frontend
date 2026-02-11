@@ -1,5 +1,4 @@
 <script setup></script>
-
 <template>
-  <router-view />
+  <div>Transaction</div>
 </template>
