@@ -2,7 +2,7 @@
 import { reactive, computed } from 'vue';
 import { useWalletStore } from '~/stores/wallet.store';
 
-import Loader from '~/components/loader.vue';
+import Loader from '~/components/Loader.vue';
 
 const walletStore = useWalletStore();
 

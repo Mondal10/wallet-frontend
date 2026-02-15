@@ -5,7 +5,7 @@ import { useWalletStore } from '~/stores/wallet.store';
 import { useTransactionStore } from '~/stores/transaction.store';
 import { formatCurrency } from '~/common/utils/valueFormatter';
 
-import Loader from '~/components/loader.vue';
+import Loader from '~/components/Loader.vue';
 
 const route = useRoute();
 const walletStore = useWalletStore();
