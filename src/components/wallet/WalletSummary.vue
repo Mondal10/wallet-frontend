@@ -6,9 +6,14 @@ import { formatCurrency } from '~/common/utils/valueFormatter';
 const walletStore = useWalletStore();
 
 const walletDetails = computed(() => walletStore.walletDetails);
+const hasWalletDetails = computed(
+  () =>
+    walletStore.walletDetails &&
+    Object.keys(walletStore.walletDetails).length > 0,
+);
 
 onMounted(async () => {
-  await walletStore.fetchWalletDetails();
+  if (!hasWalletDetails.value) await walletStore.fetchWalletDetails();
 });
 </script>
 <template>

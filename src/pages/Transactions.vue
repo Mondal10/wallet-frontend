@@ -1,9 +1,14 @@
 <script setup>
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useWalletStore } from '~/stores/wallet.store';
 
+import WalletSummary from '~/components/wallet/WalletSummary.vue';
+
 const router = useRouter();
 const walletStore = useWalletStore();
+
+const hasWalletId = computed(() => !!walletStore.walletId);
 
 function goToWallet() {
   router.push('/wallet');
@@ -11,7 +16,7 @@ function goToWallet() {
 </script>
 
 <template>
-  <div v-if="walletStore.isWalletDetailAvailable">
+  <div v-if="hasWalletId">
     <div class="flex justify-center items-center">
       <!-- Header -->
       <h1 class="font-semibold text-lg p-4">Transaction history</h1>
@@ -35,6 +40,10 @@ function goToWallet() {
             </svg>
             <p class="text-blue-500 group-hover:text-blue-600">Back</p>
           </div>
+        </div>
+        <!-- Wallet Summary Section -->
+        <div class="my-4">
+          <WalletSummary />
         </div>
         <!-- Loader and table -->
         Table
