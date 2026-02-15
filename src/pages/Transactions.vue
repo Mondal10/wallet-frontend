@@ -22,13 +22,13 @@ function goToWallet() {
             @click="goToWallet"
           >
             <svg
-              class="mt-0.5 w-4 h-4 fill-blue-500 group-hover:fill-blue-600"
+              class="mt-0.5 w-4 h-4 rotate-180 fill-blue-500 group-hover:fill-blue-600"
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 320 512"
+              viewBox="0 0 640 640"
             >
               <!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
               <path
-                d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+                d="M471.1 297.4C483.6 309.9 483.6 330.2 471.1 342.7L279.1 534.7C266.6 547.2 246.3 547.2 233.8 534.7C221.3 522.2 221.3 501.9 233.8 489.4L403.2 320L233.9 150.6C221.4 138.1 221.4 117.8 233.9 105.3C246.4 92.8 266.7 92.8 279.2 105.3L471.2 297.3z"
               />
             </svg>
             <p class="text-blue-500 group-hover:text-blue-600">Back</p>
