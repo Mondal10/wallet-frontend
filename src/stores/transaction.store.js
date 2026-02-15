@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
-import { makeTransaction, fetchTransactions } from '~/common/services/transaction.services';
+import { makeTransaction, fetchTransactions, exportTransactions } from '~/common/services/transaction.services';
 import { useToast } from 'vue-toastification';
 
 const toast = useToast();
@@ -9,6 +9,7 @@ export const useTransactionStore = defineStore('transaction', {
         transactions: null,
         isMakingTransaction: false,
         isFetchingTransactions: false,
+        isExportingTransactions: false,
     }),
     getters: {},
     actions: {
@@ -25,15 +26,27 @@ export const useTransactionStore = defineStore('transaction', {
                 this.isMakingTransaction = false;
             }
         },
-        async fetchAllTransactions(payload) {
+        async fetchAllTransactions(query) {
             this.isFetchingTransactions = true;
             try {
-                // const walletDetails = await fetchTransactions(payload);
+                await fetchTransactions(query);
             } catch (error) {
                 console.error(error);
                 toast.error(error?.response?.data?.message || "Could not fetch transactions");
             } finally {
                 this.isFetchingTransactions = false;
+            }
+        },
+        async exportTransactionsAsCSV(walletId) {
+            this.isExportingTransactions = true;
+            try {
+                const response = await exportTransactions(walletId);
+                return response;
+            } catch (error) {
+                console.error(error);
+                toast.error(error?.response?.data?.message || "Could not export transactions");
+            } finally {
+                this.isExportingTransactions = false;
             }
         }
     },

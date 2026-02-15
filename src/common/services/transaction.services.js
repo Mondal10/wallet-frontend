@@ -5,7 +5,13 @@ export const makeTransaction = (walletId, data) =>
     api.post(`/transaction/transact/${walletId}`, data);
 
 // Fetch transactions
-export const fetchTransactions = (walletId, skip = 0, limit = 10) =>
+export const fetchTransactions = ({ walletId, skip = 0, limit = 10 }) =>
     api.get("/transaction/transactions", {
         params: { walletId, skip, limit },
+    });
+
+// Export transactions
+export const exportTransactions = (walletId) =>
+    api.get(`/transaction/${walletId}/export`, {
+        responseType: "blob",
     });

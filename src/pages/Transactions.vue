@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useWalletStore } from '~/stores/wallet.store';
 
 import WalletSummary from '~/components/wallet/WalletSummary.vue';
+import TransactionsTable from '~/components/transactions/TransactionsTable.vue';
 
 const router = useRouter();
 const walletStore = useWalletStore();
@@ -45,8 +46,7 @@ function goToWallet() {
         <div class="my-4">
           <WalletSummary />
         </div>
-        <!-- Loader and table -->
-        Table
+        <TransactionsTable />
       </div>
     </div>
   </div>
