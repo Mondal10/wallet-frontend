@@ -1,11 +1,16 @@
 <script setup>
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useWalletStore } from '~/stores/wallet.store';
+
 import WalletSummary from '~/components/wallet/WalletSummary.vue';
 import WalletCreationForm from '~/components/wallet/WalletCreationForm.vue';
 import WalletTransactionForm from '~/components/wallet/WalletTransactionForm.vue';
 
-import { useRouter } from 'vue-router';
-
 const router = useRouter();
+const walletStore = useWalletStore();
+
+const hasWalletId = computed(() => walletStore.walletId);
 
 function goToTransactions() {
   router.push('/transactions');
@@ -19,7 +24,7 @@ function goToTransactions() {
     </div>
     <div class="flex justify-center">
       <div class="bg-white m-4 p-4 rounded-md w-full md:w-2/3 lg:w-1/3">
-        <div class="flex justify-end mb-2">
+        <div v-show="hasWalletId" class="flex justify-end mb-2">
           <div
             class="flex gap-2 items-center group cursor-pointer"
             @click="goToTransactions"
@@ -40,12 +45,13 @@ function goToTransactions() {
           </div>
         </div>
         <!-- Wallet Summary Section -->
-        <WalletSummary />
-        <hr class="text-gray-300 my-4" />
+        <div class="my-4">
+          <WalletSummary v-if="hasWalletId" />
+        </div>
         <!-- Wallet Creation Section -->
-        <WalletCreationForm />
+        <WalletCreationForm v-if="!hasWalletId" />
         <!-- Make Transaction Section -->
-        <WalletTransactionForm />
+        <WalletTransactionForm v-if="hasWalletId" />
       </div>
     </div>
   </div>

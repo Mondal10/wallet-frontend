@@ -1,7 +1,9 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import { useWalletStore } from '~/stores/wallet.store';
 
 const router = useRouter();
+const walletStore = useWalletStore();
 
 function goToWallet() {
   router.push('/wallet');
@@ -9,7 +11,7 @@ function goToWallet() {
 </script>
 
 <template>
-  <div>
+  <div v-if="walletStore.isWalletDetailAvailable">
     <div class="flex justify-center items-center">
       <!-- Header -->
       <h1 class="font-semibold text-lg p-4">Transaction history</h1>
@@ -34,8 +36,29 @@ function goToWallet() {
             <p class="text-blue-500 group-hover:text-blue-600">Back</p>
           </div>
         </div>
+        <!-- Loader and table -->
         Table
       </div>
+    </div>
+  </div>
+  <div v-else class="h-screen flex justify-center items-center">
+    <div class="flex flex-col justify-center items-center gap-2">
+      <img
+        class="h-20 w-20"
+        src="../assets/no-money.png"
+        alt="page not found"
+      />
+      <span class="text-xl font-medium">No transactions found</span>
+      <span class="text-sm">
+        Please
+        <span
+          @click="goToWallet"
+          class="text-blue-500 hover:text-blue-600 cursor-pointer"
+        >
+          setup your wallet
+        </span>
+        to make and view transactions
+      </span>
     </div>
   </div>
 </template>
