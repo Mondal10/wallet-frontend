@@ -64,7 +64,7 @@ onMounted(async () => {
       </div>
     </div>
   </div>
-  <div v-else class="flex justify-between items-center">
+  <div v-else class="flex justify-between">
     <div>
       <p>Wallet username: {{ walletDetails?.name }}</p>
       <div>

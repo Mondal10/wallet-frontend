@@ -23,7 +23,9 @@ function goToWallet() {
       <h1 class="font-semibold text-lg p-4">Transaction history</h1>
     </div>
     <div class="flex justify-center">
-      <div class="bg-white m-4 p-4 rounded-md w-full md:w-2/3 lg:w-1/3">
+      <div
+        class="bg-white m-4 p-4 rounded-md w-full md:w-2/3 lg:min-w-1/3 lg:max-w-2/3"
+      >
         <div class="flex mb-2">
           <div
             class="flex gap-2 items-center group cursor-pointer"
