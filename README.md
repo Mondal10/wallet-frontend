@@ -1,5 +1,10 @@
 # Wallet Transaction Frontend
 
+```
+Note: Backend is deployed on Render.
+So the first API call may take a while to boot the server and load, as inactive instances are spun off in the free tier.
+```
+
 Hosted at [Netlify hosted app](https://walletfrontend.netlify.app/)
 
 Video demo: [Loom link](https://www.loom.com/share/544c579db56b4365bc1c8dc191327af5)
