@@ -2,12 +2,14 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useWalletStore } from '~/stores/wallet.store';
+import { useTransactionStore } from '~/stores/transaction.store';
 
 import WalletSummary from '~/components/wallet/WalletSummary.vue';
 import TransactionsTable from '~/components/transactions/TransactionsTable.vue';
 
 const router = useRouter();
 const walletStore = useWalletStore();
+const transactionStore = useTransactionStore();
 
 const hasWalletId = computed(() => !!walletStore.walletId);
 
@@ -48,7 +50,7 @@ function goToWallet() {
         <div class="my-4">
           <WalletSummary />
         </div>
-        <TransactionsTable />
+        <TransactionsTable :key="transactionStore.totalTransactionsCount" />
       </div>
     </div>
   </div>

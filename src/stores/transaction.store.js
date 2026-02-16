@@ -6,7 +6,8 @@ const toast = useToast();
 
 export const useTransactionStore = defineStore('transaction', {
     state: () => ({
-        transactions: null,
+        transactions: [],
+        totalTransactionsCount: 0,
         isMakingTransaction: false,
         isFetchingTransactions: false,
         isExportingTransactions: false,
@@ -29,7 +30,10 @@ export const useTransactionStore = defineStore('transaction', {
         async fetchAllTransactions(query) {
             this.isFetchingTransactions = true;
             try {
-                await fetchTransactions(query);
+                const transactions = await fetchTransactions(query);
+                this.transactions = transactions.data.transactions;
+                this.totalTransactionsCount = transactions.data.total
+                return transactions.data;
             } catch (error) {
                 console.error(error);
                 toast.error(error?.response?.data?.message || "Could not fetch transactions");

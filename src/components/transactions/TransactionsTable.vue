@@ -1,13 +1,12 @@
 <script setup>
-import MOCK_DATA from '~/mock/transactions.json';
+// import MOCK_DATA from '~/mock/transactions.json';
 import {
   FlexRender,
   getCoreRowModel,
   getSortedRowModel,
-  getPaginationRowModel,
   useVueTable,
 } from '@tanstack/vue-table';
-import { ref, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 import { useWalletStore } from '~/stores/wallet.store';
 import { useTransactionStore } from '~/stores/transaction.store';
@@ -18,7 +17,8 @@ const walletStore = useWalletStore();
 
 const pageSizes = [10, 25, 50, 100];
 
-const defaultData = MOCK_DATA;
+// const defaultData = MOCK_DATA;
+// const data = ref(defaultData);
 
 const columns = [
   {
@@ -62,18 +62,35 @@ const columns = [
     size: 220,
   },
 ];
-const data = ref(defaultData);
+const transactions = computed(() => transactionStore.transactions);
+const totalTransactionsCount = computed(
+  () => transactionStore.totalTransactionsCount,
+);
 
 const sorting = ref([]);
+const pagination = ref({
+  pageIndex: 0,
+  pageSize: 10,
+});
 const table = useVueTable({
   get data() {
-    return data.value;
+    // return data.value;
+    return transactions.value;
   },
   columns,
   state: {
     get sorting() {
       return sorting.value;
     },
+    get pagination() {
+      return pagination.value;
+    },
+  },
+  manualPagination: true,
+  rowCount: totalTransactionsCount.value,
+  onPaginationChange: (updater) => {
+    pagination.value =
+      typeof updater === 'function' ? updater(pagination.value) : updater;
   },
   onSortingChange: (updaterOrValue) => {
     sorting.value =
@@ -83,26 +100,46 @@ const table = useVueTable({
   },
   getCoreRowModel: getCoreRowModel(),
   getSortedRowModel: getSortedRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
 });
 
 function handlePageSizeChange(e) {
-  console.log('Page size changed', e.target.value);
   table.setPageSize(Number(e.target.value));
 }
 
-onMounted(() => {
-  console.log('Table1', transactionStore.isFetchingTransactions);
-  // transactionStore.fetchAllTransactions({
-  //   walletId: walletStore.walletId,
-  //   skip: 0,
-  //   limit: 10,
-  // });
-});
+watch(
+  () => table.getState().pagination,
+  async (pagination) => {
+    await transactionStore.fetchAllTransactions({
+      walletId: walletStore.walletId,
+      skip: pagination.pageIndex * pagination.pageSize,
+      limit: pagination.pageSize,
+    });
+  },
+  { deep: true, immediate: true },
+);
 </script>
 
 <template>
-  <div>
+  <div v-if="transactionStore.isFetchingTransactions">
+    <div class="mx-auto w-full border border-gray-300 p-4">
+      <div class="animate-pulse space-y-3">
+        <div class="grid grid-cols-10 gap-4">
+          <div class="col-span-2 h-10 rounded bg-gray-200"></div>
+          <div class="col-span-2 h-10 rounded bg-gray-200"></div>
+          <div class="col-span-2 h-10 rounded bg-gray-200"></div>
+          <div class="col-span-2 h-10 rounded bg-gray-200"></div>
+          <div class="col-span-2 h-10 rounded bg-gray-200"></div>
+        </div>
+        <div class="h-10 rounded bg-gray-200"></div>
+        <div class="h-10 rounded bg-gray-200"></div>
+        <div class="h-10 rounded bg-gray-200"></div>
+        <div class="h-10 rounded bg-gray-200"></div>
+        <div class="h-10 rounded bg-gray-200"></div>
+        <div class="h-10 rounded bg-gray-200"></div>
+      </div>
+    </div>
+  </div>
+  <div v-else>
     <!-- Table -->
     <div class="overflow-x-auto overflow-y-scroll max-h-[65vh]">
       <table class="table-fixed w-full border border-gray-300">
@@ -219,11 +256,10 @@ onMounted(() => {
         </select>
       </div>
     </div>
-    <!-- Consoles -->
+    <!-- Debug Consoles -->
     <!-- <div>{{ table.getRowModel().rows.length }} Rows</div>
     <pre>{{ JSON.stringify(sorting, null, 2) }}</pre>
     <div>{{ table.getRowModel().rows.length }} Rows</div>
     <pre>{{ JSON.stringify(table.getState().pagination, null, 2) }}</pre> -->
-    <!-- <button @click="rerender" class="border p-2">Rerender</button> -->
   </div>
 </template>
